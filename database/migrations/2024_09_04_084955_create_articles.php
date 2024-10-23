@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('author', 100)->nullable(); // Kolom author
             $table->timestamps(); // Kolom created_at dan updated_at
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft'); // Kolom status
-            $table->foreignId('category_id')->constrained('categories')->onDelete('set null'); // Kolom category_id sebagai foreign key
+            $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null'); // Kolom category_id sebagai foreign key
         });
     }
     public function down(): void
