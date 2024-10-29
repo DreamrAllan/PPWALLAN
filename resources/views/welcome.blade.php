@@ -1,97 +1,37 @@
-<?php
+<div class="mt-16">
+    @if ($message = Session::get('success'))
+        <div class="alert alert-success">
+            {{ $message }}
+        </div>
+    @elseif ($message = Session::get('error'))
+        <div class="alert alert-danger" role="alert">
+            {{ $message }}
+        </div>
+    @endif
+</div>
 
-namespace App\Http\Controllers\Auth;
-
-use App\Models\User;
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\Auth\LoginRegisterController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-
-class LoginRegisterController extends Controller
-{
-    // instantiate a new LoginRegisterController instance
-    public function  __construct() {
-        $this->middleware('guest')->except([
-            'logout', 'dashboard'
-        ]);
+<style>
+    .alert {
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    .alert-danger {
+        background-color: #f8d7da; /* Lighter red */
+        border-color: #f5c6cb; /* Slightly darker border */
+        color: #721c24; /* Darker text */
+    }
+    .alert-success {
+        background-color: #d4edda; /* Lighter green */
+        border-color: #c3e6cb; /* Slightly darker border */
+        color: #155724; /* Darker text */
     }
 
-    // display registration form
-    public function register() {
-        return view('auth.register');
+    .alert:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     }
-
-    // store a new user
-    public function store(Request $request) {
-
-        // validasi data yang dikirim
-        $request->validate([
-            'name' => 'required|string|max:250',
-            'email' => 'required|email|max:250|unique:users',
-            'password' => 'required|min:8|confirmed'
-        ]);
-
-        // membuat pengguna baru
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
-
-        // autentikasi pengguna
-        $credentials = $request->only('email', 'password');
-        Auth::attempt($credentials);
-
-        // redirect pengguna ke halaman dashboard
-        $request->session()->regenerate();
-        return redirect()->route('dashboard')
-            ->withSuccess('You have successfully registered & logged in!');
-    }
-
-    // display a login form
-    public function login() {
-        return view('auth.login');
-    }
-
-    // authenticate the user
-    public function authenticate(Request $request) {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->route('dashboard')
-                            ->withSuccess('You have successfully logged in!');
-        }
-
-        return back()->withErrors([
-            'email' => 'Your provided credentials do not match in our records.',
-        ])->onlyInput('email');
-    }
-
-    // display a dashboard to auathenticated users
-    public function dashboard() {
-        if (Auth::check()) {
-            return view('auth.dashboard');
-        }
-    
-        return redirect()->route('login')
-                         ->withErrors([
-                             'email' => 'Please login to access the dashboard.',
-                         ])->onlyInput('email');
-    }
-
-    // logout the user from app
-    public function logout(Request $request) {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        
-        return redirect()->route('login')
-                        ->withSuccess('You have logged out successfully!');
-    }
-}
+</style>

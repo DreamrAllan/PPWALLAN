@@ -5,9 +5,9 @@ use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\BukuController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// })->name('welcome');
 
 Route::controller(LoginRegisterController::class)->group(function() {
     Route::get('/register', 'register')->name('register');
@@ -17,10 +17,21 @@ Route::controller(LoginRegisterController::class)->group(function() {
     Route::post('/logout', 'logout')->name('logout');
 });
 
+// Route:: get ('/restricted', function () {
+//     return redirect () ->route ('dashboard') ->withSuccess ("Anda berusia lebih dari
+//     18 tahun!");
+//     })->middleware ('checkage');
+
+    
+// Route:: get('/home', [LoginRegisterController :: class, 'dashboard' ])->name('home' );
+
+// Route::get('/dashboard', [LoginRegisterController :: class, 'dashboard' ])->name('dashboard' );
+
+
+
 // middleware auth untuk halaman dashboard dan route buku
 Route::middleware(['auth'])->group(function() {
     Route::get('/dashboard', [BukuController::class, 'index'])->name('dashboard');
-    
     Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
     Route::get('/buku/create', [BukuController::class, 'create'])->name('buku.create');
     Route::post('/buku', [BukuController::class, 'store'])->name('buku.store');
@@ -70,3 +81,19 @@ Route::middleware(['auth'])->group(function() {
 //     Route::get('/dashboard', 'dashboard')->name('dashboard');
 //     Route::post('/logout', 'logout')->name('logout');
 // });
+
+
+// route untuk middleware check age
+Route::get('/', function () {
+    return view('welcome');
+}) -> name('welcome');
+
+Route::get('restricted', function() {
+    return redirect(route('dashboard'))->with('success', 'Anda berusia lebih dari 18 tahun!');
+})->middleware('checkage');
+
+// Rute untuk halaman home bagi pengguna biasa
+Route::get('/home', [LoginRegisterController::class, 'dashboard'])->name('home');
+
+// Rute untuk dashboard, dengan pengalihan berdasarkan peran pengguna di controller
+Route::get('/dashboard', [LoginRegisterController::class, 'dashboard'])->name('dashboard');

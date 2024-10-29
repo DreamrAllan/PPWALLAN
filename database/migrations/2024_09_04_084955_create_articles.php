@@ -29,9 +29,13 @@ return new class extends Migration
             $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null'); // Kolom category_id sebagai foreign key
         });
     }
+
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('articles');
+        Schema::dropIfExists('categories'); // Drop categories table as well
     }
 };
-

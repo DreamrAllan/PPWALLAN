@@ -7,13 +7,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Buku;
 
 class LoginRegisterController extends Controller
 {
     // Instantiate a new LoginRegisterController instance
     public function __construct()
     {
-        $this->middleware('guest')->except(['logout', 'dashboard']);
+        $this->middleware('guest')->except([
+            'logout', 'dashboard']);
     }
 
     // Display the registration form
@@ -79,18 +81,30 @@ class LoginRegisterController extends Controller
 
     // Display the dashboard to authenticated users
     public function dashboard()
-    {
-        // Check if the user is authenticated
-        if (Auth::check()) {
-            return view('auth.dashboard');
+{
+    // Check if the user is authenticated
+    if (Auth::check()) {
+        $user = Auth::user();
+
+        // Jika pengguna adalah admin
+        if ($user->level === 'admin') {
+            // Ambil data buku untuk dashboard admin
+            $data_buku = Buku::all();
+            $jumlah_buku = $data_buku->count();
+            $total_harga = $data_buku->sum('harga');
+
+            return view('auth.dashboard', compact('data_buku', 'jumlah_buku', 'total_harga'));
         }
 
-        // Redirect to the login page if not authenticated
-        return redirect()->route('login')
-            ->withErrors([
-                'email' => 'Please login to access the dashboard.',
-            ]);
+        // Jika user biasa, arahkan ke halaman home
+        return view('home');
     }
+
+    // Redirect to the login page if not authenticated
+    return redirect()->route('login')
+        ->withErrors(['email' => 'Please login to access the dashboard.']);
+}
+
 
     // Logout the user from the application
     public function logout(Request $request)
