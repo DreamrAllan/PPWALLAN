@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\UserController;
+
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -97,3 +99,13 @@ Route::get('/home', [LoginRegisterController::class, 'dashboard'])->name('home')
 
 // Rute untuk dashboard, dengan pengalihan berdasarkan peran pengguna di controller
 Route::get('/dashboard', [LoginRegisterController::class, 'dashboard'])->name('dashboard');
+
+
+Route::resource ('users', UserController::class);
+
+Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+
+Route::resource('users', UserController::class);
+
