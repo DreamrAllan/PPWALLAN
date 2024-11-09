@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GalleryController;
 
 
 // Route::get('/', function () {
@@ -109,3 +110,9 @@ Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update
 
 Route::resource('users', UserController::class);
 
+
+Route::resource('gallery', GalleryController::class);
+
+Route::get('/gallery/{id}/edit', [GalleryController::class, 'edit'])->name('gallery.edit');
+Route::put('/gallery/{id}', [GalleryController::class, 'update'])->name('gallery.update');
+Route::delete('/gallery/{id}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
