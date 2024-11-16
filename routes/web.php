@@ -6,6 +6,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\SendEmailController;
 
 
 // Route::get('/', function () {
@@ -116,3 +117,10 @@ Route::resource('gallery', GalleryController::class);
 Route::get('/gallery/{id}/edit', [GalleryController::class, 'edit'])->name('gallery.edit');
 Route::put('/gallery/{id}', [GalleryController::class, 'update'])->name('gallery.update');
 Route::delete('/gallery/{id}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+
+
+Route::get('/send-email', [SendEmailController::class, 'index'])->name('kirim-email');
+Route::post('/post-email', [SendEmailController::class, 'store'])->name('post-email');
+
+Route::get('register', [UserController::class, 'showRegistrationForm'])->name('register');
+Route::post('register', [UserController::class, 'register']);

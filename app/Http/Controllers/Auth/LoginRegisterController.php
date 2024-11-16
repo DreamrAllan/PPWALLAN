@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Buku;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegistrationSuccessMail;
+
 
 class LoginRegisterController extends Controller
 {
@@ -19,13 +22,7 @@ class LoginRegisterController extends Controller
             'logout', 'dashboard']);
     }
 
-    // Display the registration form
-    public function register()
-    {
-        return view('auth.register');
-    }
-
-    // Store a new user
+    // Store a new user and send email notification
     public function store(Request $request)
     {
         // Validate the incoming data
@@ -43,16 +40,19 @@ class LoginRegisterController extends Controller
             $filenameSimpan = $filename . '_' . time() . '.' . $extension;
             $path = $request->file('photo')->storeAs('photos', $filenameSimpan);
         } else {
-
+            $path = null; // Or set a default image path if needed
         }
 
         // Create a new user
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'photo'=> $path
+            'photo' => $path
         ]);
+
+        // Send registration success email
+        Mail::to($user->email)->send(new RegistrationSuccessMail($user));
 
         // Authenticate the user
         $credentials = $request->only('email', 'password');
