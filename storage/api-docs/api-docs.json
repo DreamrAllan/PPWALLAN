@@ -1,0 +1,128 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Contoh API documentation",
+        "description": "Contoh API doc menggunakan OpenAPI/Swagger",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "email": "choirudin.emchagmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "0.0.1"
+    },
+    "paths": {
+        "/api/gallery": {
+            "get": {
+                "tags": [
+                    "Gallery"
+                ],
+                "summary": "Get gallery items with images",
+                "description": "Returns a list of gallery items that have images",
+                "operationId": "getGallery",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "title": {
+                                                "type": "string",
+                                                "example": "Beautiful Sunset"
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "example": "A stunning view of the sunset"
+                                            },
+                                            "picture": {
+                                                "type": "string",
+                                                "example": "http://example.com/images/sunset.jpg"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "example": "2024-11-21 10:00:00"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "example": "2024-11-21 12:00:00"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/greet": {
+            "get": {
+                "tags": [
+                    "greeting"
+                ],
+                "summary": "Returns a Sample API response",
+                "description": "A sample greeting to test out the API",
+                "operationId": "greet",
+                "parameters": [
+                    {
+                        "name": "firstname",
+                        "in": "query",
+                        "description": "nama depan",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "lastname",
+                        "in": "query",
+                        "description": "nama belakang",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Berhasil memproses masukan user",
+                                    "data": {
+                                        "output": "Halo John Doe",
+                                        "firstname": "John",
+                                        "lastname": "Doe"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Gallery",
+            "description": "Gallery"
+        },
+        {
+            "name": "greeting",
+            "description": "greeting"
+        }
+    ]
+}

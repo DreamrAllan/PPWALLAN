@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- In the <head> section -->
     <link rel="stylesheet" href="{{ asset('lightbox2/dist/css/lightbox.min.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -63,6 +64,8 @@
     
     <!-- In the JavaScript import section -->
     <script src="{{ asset('lightbox2/dist/js/lightbox-plus-jquery.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+
 </body>
 </html>
 

@@ -145,5 +145,47 @@ class GalleryController extends Controller
 
         return redirect()->route('gallery.index')->with('success', 'Gambar berhasil dihapus');
     }
+    /**
+     * API: Get gallery items with images
+     */
+    /**
+     * @OA\Get(
+     *     path="/api/gallery",
+     *     tags={"Gallery"},
+     *     summary="Get gallery items with images",
+     *     description="Returns a list of gallery items that have images",
+     *     operationId="getGallery",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="title", type="string", example="Beautiful Sunset"),
+     *                 @OA\Property(property="description", type="string", example="A stunning view of the sunset"),
+     *                 @OA\Property(property="picture", type="string", example="http://example.com/images/sunset.jpg"),
+     *                 @OA\Property(property="created_at", type="string", example="2024-11-21 10:00:00"),
+     *                 @OA\Property(property="updated_at", type="string", example="2024-11-21 12:00:00")
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function apiIndex()
+    {
+        $galleries = Post::where('picture', '!=', '')
+                        ->whereNotNull('picture')
+                        ->orderBy('created_at', 'desc')
+                        ->paginate(30);
+
+        return response()->json([
+            'message' => 'Gallery data fetched successfully',
+            'success' => true,
+            'data' => $galleries,
+        ], 200);
+    }
+
 
 }
